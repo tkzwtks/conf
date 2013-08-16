@@ -1,16 +1,34 @@
 ;;; ロードパスの追加
 (setq load-path (append
-                 '("~/.emacs.d"
-                   "~/.emacs.d/packages"
-                   "~/.emacs.d/packages/hand-install"
-                   "~/.emacs.d/packages/hand-install/scala"
-                   "~/.emacs.d/auto-install")
-                 load-path))
+                 '("~/.emacs.d")
+                 load-path));;; パッケージ管理
+
+;; ime
+(setq default-input-method "MacOSX")
+
+;;; above 24.x
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/")t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
+ '(custom-enabled-themes (quote (wheatgrass))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
 ;; フォントセットを作る
 (let* ((fontset-name "myfonts") ; フォントセットの名前
-       (size 12) ; ASCIIフォントのサイズ [9/10/12/14/15/17/19/20/...]
-       (asciifont "monaco") ; ASCIIフォント
+       (size 14) ; ASCIIフォントのサイズ [9/10/12/14/15/17/19/20/...]
+       (asciifont "Ricty") ; ASCIIフォント
        (jpfont "Hiragino Maru Gothic ProN") ; 日本語フォント
        (font (format "%s-%d:weight=normal:slant=normal" asciifont size))
        (fontspec (font-spec :family asciifont))
@@ -25,24 +43,19 @@
 
 (add-to-list 'default-frame-alist '(font . "fontset-myfonts"))
 
-;; カーソルの点滅を止める
-(blink-cursor-mode 0)
+;; フォントサイズの比を設定
+(dolist (elt '(("^-apple-hiragino.*" . 1.2)
+               (".*osaka-bold.*" . 1.2)
+               (".*osaka-medium.*" . 1.2)
+               (".*courier-bold-.*-mac-roman" . 1.0)
+               (".*monaco cy-bold-.*-mac-cyrillic" . 0.9)
+               (".*monaco-bold-.*-mac-roman" . 0.9)))
+  (add-to-list 'face-font-rescale-alist elt))
 
-;; 行末の空白表示
-;;(setq-default show -trailing-whitespace t)
-
-;;; 現在行を目立たせる
-(global-hl-line-mode)
-
-;;; カーソルの位置が何文字目かを表示する
-(column-number-mode t)
-
-;;; カーソルの位置が何行目かを表示する
-(line-number-mode t)
-
-;;; カーソルの場所を保存する
-(require 'saveplace)
-(setq-default save-place t)
+;; デフォルトのフレームパラメータでフォントセットを指定
+;; # これは起動時に default-frame-alist に従ったフレームが
+;; # 作成されない現象への対処
+(set-face-font 'default "fontset-myfonts")
 
 ;;; バックアップファイルを作らない
 (setq backup-inhibited t)
@@ -50,55 +63,81 @@
 ;;; 終了時にオートセーブファイルを消す
 (setq delete-auto-save-files t)
 
-;;; 補完時に大文字小文字を区別しない
-(setq completion-ignore-case t)
-(setq read-file-name-completion-ignore-case t)
+;;; 半透明
+(set-frame-parameter nil 'alpha 90)
 
-;;; 部分一致の補完機能を使う
-;;; p-bでprint-bufferとか
-(partial-completion-mode t)
+;;; C-mにnewline-and-indentを割り当てる
+(define-key global-map (kbd "C-m") 'newline-and-indent)
 
-;;; 補完可能なものを随時表示
-;;; 少しうるさい
-(icomplete-mode 1)
+;;; C-tにother-windowを割り当てる
+(define-key global-map (kbd "C-t") 'other-window)
 
-;;; diredを便利にする
-(require 'dired-x)
+;;; C-bにanythingを割り当てる
+(define-key global-map (kbd "C-x b") 'anything)
 
-;;; diredから"r"でファイル名をインライン編集する
-(require 'wdired)
-(define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
+;;; カラム番号も表示
+(column-number-mode t)
 
-;;; ファイル名が重複していたらディレクトリ名を追加する。
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+;;; ファイルサイズを表示
+(size-indication-mode t)
 
-;;; 標準Elispの設定
-(load "config/builtins")
+;;; 時計を表示
+(setq display-time-day-and-date t)
+(display-time-mode t)
 
-;;; 非標準Elispの設定
-(load "config/packages")
+;;; バッテリー残量を表示
+(display-battery-mode t)
 
-;;; 見た目の設定
-(load "config/faces")
+;; TAB表示幅指定
+(setq-default tab-width 4)
 
-;;; anythig-mode
-(require 'anything-startup)
+;; インデントにタブ文字を使用しない
+(setq-default indent-tabs-mode nil)
 
-;;; exec-path
-;; より下に記述した物が PATH の先頭に追加されます
-(dolist (dir (list
-              "/sbin"
-              "/usr/sbin"
-              "/bin"
-              "/usr/bin"
-              "/opt/local/bin"
-              "/sw/bin"
-              "/usr/local/bin"
-              (expand-file-name "~/bin")
-              (expand-file-name "~/.emacs.d/bin")
-              ))
- ;; PATH と exec-path に同じ物を追加します
- (when (and (file-exists-p dir) (not (member dir exec-path)))
-   (setenv "PATH" (concat dir ":" (getenv "PATH")))
-   (setq exec-path (append (list dir) exec-path))))
+;; anything
+(when (require 'anything nil t)
+  (setq
+   ;; 候補表示までの時間
+   anything-idle-delay 0.3
+   ;; タイプして再描写するまでの時間
+   anything-input-idle-delay 0.2
+   ;; 候補の最大表示数。デフォルトは50
+   anything-candidate-number-limit 100
+   ;; 候補が多い時に体感速度を早くする
+   anything-quick-update t
+   ;; 候補選択ショートカットをアルファベットに
+   anything-enable-shortcuts 'alphabet)
+
+  (require 'anything-match-plugin nil t)
+  (when (and (executable-find "cmigemo")
+             (require 'migemo nil t))
+    (require 'anything-migemo nil t))
+
+  (require 'anything-complete nil t)
+
+  (require 'anything-show-completion nil t)
+
+  (when (require 'auto-install nil t)
+    (require 'anything-auto-install nil t))
+
+  (when (require 'descbinds-anything nil t)
+    ;; describe-bindingsをAnythingに置き換える
+    (descbinds-anything-install)))
+
+;; auto-complete
+(when (require 'auto-complete-config nil t)
+  (add-to-list 'ac-dictionary-directories
+               "~/.emacs.d/var/ac-dict")
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+  (ac-config-default))
+
+;; wgrep
+(require 'wgerp nil t)
+
+;; undo-tree
+(when (require 'undo-tree nil t)
+  (global-undo-tree-mode))
+
+;; multi-term
+(when (require 'multi-term nil t)
+  (setq multi-term-program "/bin/bash"))
