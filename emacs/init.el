@@ -25,38 +25,6 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; フォントセットを作る
-(let* ((fontset-name "myfonts") ; フォントセットの名前
-       (size 14) ; ASCIIフォントのサイズ [9/10/12/14/15/17/19/20/...]
-       (asciifont "Ricty") ; ASCIIフォント
-       (jpfont "Hiragino Maru Gothic ProN") ; 日本語フォント
-       (font (format "%s-%d:weight=normal:slant=normal" asciifont size))
-       (fontspec (font-spec :family asciifont))
-       (jp-fontspec (font-spec :family jpfont)) 
-       (fsn (create-fontset-from-ascii-font font nil fontset-name)))
-  (set-fontset-font fsn 'japanese-jisx0213.2004-1 jp-fontspec)
-  (set-fontset-font fsn 'japanese-jisx0213-2 jp-fontspec)
-  (set-fontset-font fsn 'katakana-jisx0201 jp-fontspec) ; 半角カナ
-  (set-fontset-font fsn '(#x0080 . #x024F) fontspec) ; 分音符付きラテン
-  (set-fontset-font fsn '(#x0370 . #x03FF) fontspec) ; ギリシャ文字
-  )
-
-(add-to-list 'default-frame-alist '(font . "fontset-myfonts"))
-
-;; フォントサイズの比を設定
-(dolist (elt '(("^-apple-hiragino.*" . 1.2)
-               (".*osaka-bold.*" . 1.2)
-               (".*osaka-medium.*" . 1.2)
-               (".*courier-bold-.*-mac-roman" . 1.0)
-               (".*monaco cy-bold-.*-mac-cyrillic" . 0.9)
-               (".*monaco-bold-.*-mac-roman" . 0.9)))
-  (add-to-list 'face-font-rescale-alist elt))
-
-;; デフォルトのフレームパラメータでフォントセットを指定
-;; # これは起動時に default-frame-alist に従ったフレームが
-;; # 作成されない現象への対処
-(set-face-font 'default "fontset-myfonts")
-
 ;;; バックアップファイルを作らない
 (setq backup-inhibited t)
 
@@ -73,7 +41,7 @@
 (define-key global-map (kbd "C-t") 'other-window)
 
 ;;; C-bにanythingを割り当てる
-(define-key global-map (kbd "C-x b") 'anything)
+;;(define-key global-map (kbd "C-x b") 'helm-M-x)
 
 ;;; カラム番号も表示
 (column-number-mode t)
@@ -94,36 +62,6 @@
 ;; インデントにタブ文字を使用しない
 (setq-default indent-tabs-mode nil)
 
-;; anything
-(when (require 'anything nil t)
-  (setq
-   ;; 候補表示までの時間
-   anything-idle-delay 0.3
-   ;; タイプして再描写するまでの時間
-   anything-input-idle-delay 0.2
-   ;; 候補の最大表示数。デフォルトは50
-   anything-candidate-number-limit 100
-   ;; 候補が多い時に体感速度を早くする
-   anything-quick-update t
-   ;; 候補選択ショートカットをアルファベットに
-   anything-enable-shortcuts 'alphabet)
-
-  (require 'anything-match-plugin nil t)
-  (when (and (executable-find "cmigemo")
-             (require 'migemo nil t))
-    (require 'anything-migemo nil t))
-
-  (require 'anything-complete nil t)
-
-  (require 'anything-show-completion nil t)
-
-  (when (require 'auto-install nil t)
-    (require 'anything-auto-install nil t))
-
-  (when (require 'descbinds-anything nil t)
-    ;; describe-bindingsをAnythingに置き換える
-    (descbinds-anything-install)))
-
 ;; auto-complete
 (when (require 'auto-complete-config nil t)
   (add-to-list 'ac-dictionary-directories
@@ -134,10 +72,36 @@
 ;; wgrep
 (require 'wgerp nil t)
 
-;; undo-tree
-(when (require 'undo-tree nil t)
-  (global-undo-tree-mode))
-
 ;; multi-term
 (when (require 'multi-term nil t)
   (setq multi-term-program "/bin/bash"))
+
+;; for helm
+(require 'helm)
+(require 'helm-config)
+(helm-mode 1)
+
+(defun my-helm ()
+  (interactive)
+  (helm :sources '(
+                   helm-c-source-buffers-list
+                   helm-c-source-recentf
+                   helm-c-source-files-in-current-dir
+                   helm-c-source-mac-spotlight
+                   helm-c-source-buffer-not-found)
+        :buffer "*my helm*"))
+
+(global-set-key (kbd "C-x b") 'my-helm)
+(global-set-key (kbd "M-x") 'helm-M-x)
+
+(setq helm-samewindow nil)
+(push '("*helm-M-x*") popwin:special-display-config)
+
+;; emacsの終了時に、履歴を保存する
+(remove-hook 'kill-emacs-hook 'helm-c-adaptive-save-history)
+
+;; ディレイは0.2秒
+(setq helm-input-idle-delay 0.02)
+
+;; 候補のディレクトリが一つしかない場合に、自動的に展開しない
+(setq helm-ff-auto-update-initial-value nil)
