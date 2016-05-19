@@ -19,3 +19,8 @@
 ;; バッファ自動再読み込み
 (global-auto-revert-mode 1)
 
+;; 日本語入力設定
+(setq default-input-method "MacOSX")
+(mac-set-input-method-parameter "com.google.inputmethod.Japanese.base" `title "あ")
+
+
