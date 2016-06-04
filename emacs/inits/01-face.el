@@ -15,9 +15,9 @@
 ;; 行強調
 (defface my-hl-line-face
   '((((class color) (background dark))
-     (:background "NavyBlue" t))
+     (:background "DarkOliveGreen" t))
     (((class color) (background light))
-     (:background "LightGoldenrodYellow" t))
+     (:background "NavyBlue" t))
     (t (:bold t)))
     "hl-line's my face")
 (setq hl-line-face 'my-hl-line-face)
@@ -40,3 +40,6 @@
 
 ;; スクロールバー非表示
 (scroll-bar-mode 0)
+
+;; タイトルバーにフルパスを表示
+(setq frame-title-format "%f")
