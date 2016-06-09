@@ -1,5 +1,5 @@
 ;; テーマ
-(load-theme 'tango-dark)
+(load-theme 'tango-dark t)
 
 ;; フォント
 ;; ascii
