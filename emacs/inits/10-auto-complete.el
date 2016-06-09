@@ -1,6 +1,3 @@
-(el-get-bundle auto-complete)
-(el-get-bundle fuzzy)
-
 (require 'auto-complete-config)
 (ac-config-default)
 (add-to-list 'ac-dictionary-directories (locate-user-emacs-file "dict"))

@@ -1,6 +1,4 @@
 (defalias 'perl-mode 'cperl-mode)
-(el-get-bundle perl-completion)
-
 (add-hook 'cperl-mode-hook
 	  (lambda ()
 	    (when (require 'auto-complete nil t) ; no error whatever auto-complete.el is not installed.
