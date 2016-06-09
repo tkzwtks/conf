@@ -1,11 +1,9 @@
 (defalias 'perl-mode 'cperl-mode)
 (add-hook 'cperl-mode-hook
-	  (lambda ()
-	    (when (require 'auto-complete nil t) ; no error whatever auto-complete.el is not installed.
-	      (auto-complete-mode t)
-	      (make-variable-buffer-local 'ac-sources)
-	      (setq ac-sources
-		    '(ac-source-perl-completion)))))
+ (lambda ()
+   (when (require 'auto-complete nil t) ; no error whatever auto-complete.el is not installed.
+     (auto-complete-mode t)
+     (make-variable-buffer-local 'ac-sources))))
 
 ;; インデント
 (setq cperl-indent-level 4 ; インデント幅
