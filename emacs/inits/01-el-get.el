@@ -2,7 +2,6 @@
 (el-get-bundle helm)
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
-(el-get-bundle anything)
 (el-get-bundle auto-complete)
 (el-get-bundle fuzzy)
 (el-get-bundle elscreen)
