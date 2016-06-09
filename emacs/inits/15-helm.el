@@ -1,9 +1,11 @@
 ;; helm関連設定
 (require 'helm-mode)
+(require 'helm-ls-git)
 
 (custom-set-variables
  '(helm-mini-default-sources '(helm-source-buffers-list
                                helm-source-recentf
+			       helm-source-ls-git
                                helm-source-files-in-current-dir
                                )))
 
