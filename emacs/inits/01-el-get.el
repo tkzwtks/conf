@@ -9,3 +9,4 @@
 (el-get-bundle open-junk-file)
 (el-get-bundle perl-completion)
 (el-get-bundle magit)
+(el-get-bundle popwin)

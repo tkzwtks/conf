@@ -9,6 +9,7 @@
                                helm-source-files-in-current-dir
                                )))
 
+(setq helm-samewindow nil)
 (define-key global-map (kbd "C-x b") 'helm-mini)
 (define-key global-map (kbd "M-y") 'helm-show-kill-ring)
 (define-key global-map (kbd "M-x") 'helm-M-x)
