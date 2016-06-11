@@ -12,3 +12,4 @@
 (el-get-bundle popwin)
 (el-get-bundle helm-ghq)
 (el-get-bundle exec-path-from-shell)
+(el-get-bundle git-gutter)
