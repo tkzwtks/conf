@@ -24,7 +24,5 @@
               (setq indent-tabs-mode nil)
               (setq tab-width nil))
             (set-face-bold 'cperl-array-face nil)
-            (set-face-background 'cperl-array-face "black")
             (set-face-bold 'cperl-hash-face nil)
-            (set-face-italic 'cperl-hash-face nil)
-            (set-face-background 'cperl-hash-face "black")))
+            (set-face-italic 'cperl-hash-face nil)))
