@@ -14,3 +14,4 @@
 (el-get-bundle exec-path-from-shell)
 (el-get-bundle git-gutter)
 (el-get-bundle (:name flycheck :build (progn nil) :info nil))
+(el-get-bundle web-mode)
