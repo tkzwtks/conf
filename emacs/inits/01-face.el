@@ -23,6 +23,9 @@
 (setq hl-line-face 'my-hl-line-face)
 (global-hl-line-mode t)
 
+;; tabの扱い
+(setq-default indent-tabs-mode nil)
+
 ;; paren-mode
 (setq show-paren-delay 0);
 (show-paren-mode t)
