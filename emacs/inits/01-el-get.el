@@ -15,3 +15,6 @@
 (el-get-bundle git-gutter)
 (el-get-bundle (:name flycheck :build (progn nil) :info nil))
 (el-get-bundle web-mode)
+(el-get-bundle typescript-mode)
+(el-get-bundle tide)
+(el-get-bundle company-mode)
