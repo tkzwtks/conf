@@ -18,3 +18,6 @@
 (el-get-bundle typescript-mode)
 (el-get-bundle tide)
 (el-get-bundle company-mode)
+(el-get-bundle plantuml-mode)
+(el-get-bundle go-mode)
+(el-get-bundle go-autocomplete)
