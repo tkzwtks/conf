@@ -3,10 +3,17 @@
 (setq auto-mode-alist (cons '("\\.psgi$" . cperl-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("cpanfile$" . cperl-mode) auto-mode-alist))
 
+;; perl-completion
+(require 'perl-completion)
+(add-hook 'cperl-mode-hook
+          (lambda()
+            (perl-completion-mode t)))
+
 (add-hook 'cperl-mode-hook (lambda ()
    (when (require 'auto-complete nil t) ; no error whatever auto-complete.el is not installed.
      (auto-complete-mode t)
-     (make-variable-buffer-local 'ac-sources))))
+     (make-variable-buffer-local 'ac-sources)
+     (setq ac-sources '(ac-source-perl-complatetion)))))
 
 (setq cperl-indent-level 4)
 (defvar cperl-continued-statement-offset 4)

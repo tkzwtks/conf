@@ -21,3 +21,4 @@
 (el-get-bundle plantuml-mode)
 (el-get-bundle go-mode)
 (el-get-bundle go-autocomplete)
+(el-get-bundle perl-completion)
