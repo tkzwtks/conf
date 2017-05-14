@@ -21,4 +21,7 @@
 (el-get-bundle plantuml-mode)
 (el-get-bundle go-mode)
 (el-get-bundle go-autocomplete)
-(el-get-bundle perl-completion)
+
+;; el-getに無いので、githubからインストールする
+;; https://github.com/syohex/emacs-helm-perldoc/releases/tag/0.07
+(el-get-bundle helm-perldoc :type git :url "git@github.com:syohex/emacs-helm-perldoc.git" :checkout "18645f2065a07acce2c6b50a2f9d7a2554e532a3")
