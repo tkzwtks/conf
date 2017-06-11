@@ -56,7 +56,7 @@
                          spaces         ; スペース
                          empty          ; 先頭/末尾の空行
                          space-mark     ; 表示のマッピング
-                         tab-mark
+                         ;tab-mark
                          ))
 
 (setq whitespace-display-mappings
@@ -96,3 +96,9 @@
 (add-hook 'markdown-mode-hook
           '(lambda ()
              (set (make-local-variable 'whitespace-action) nil)))
+;; golangではgofmt使うのでwhitespace-modeを適用しない
+(add-hook 'go-mode-hook
+          '(lambda ()
+             (set (make-local-variable 'whitespace-action) nil)))
+
+(setq-default tab-width 4
