@@ -16,7 +16,7 @@
                           line-end))
   :modes (cperl-mode))
 
-(add-hook 'cperl-mode-hook
-          (lambda ()
-            (flycheck-mode t)
-            (setq flycheck-checker 'perl-project-libs)))
+;;(add-hook 'cperl-mode-hook
+;;          (lambda ()
+;;            (flycheck-mode t)
+;;            (setq flycheck-checker 'perl-project-libs)))
